@@ -10,7 +10,7 @@ using System.Collections.Generic;
  */
 
 public class UnionFind<T> {
-    private Dictionary<T, int> index;
+    private Dictionary<T, int> index = new Dictionary<T, int>();
     private List<int> parent;
     private List<int> size;
 

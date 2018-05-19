@@ -218,7 +218,8 @@ public class DungeonGenerator<RoomType, HallwayType>
             return;
         }
         
-        var tree = GraphHelpers.minimumSpanningTreeKruskal(graph: generateGraph());
+        var initialGraph = generateGraph();
+        var tree = GraphHelpers.minimumSpanningTreeKruskal(graph: initialGraph);
         this.dungeon = new Dungeon<RoomType, HallwayType>(tree);
     }
     

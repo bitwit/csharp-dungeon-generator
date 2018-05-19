@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,6 @@ public class AdjacencyListGraph<T, D> {
         foreach(var edge in graph.edges) {
             var from = createVertex(edge.from.data);
             var to = createVertex(edge.to.data);
-            
             addEdge(from, to, edge.data, edge.weight);
         }
     }
@@ -31,7 +31,7 @@ public class AdjacencyListGraph<T, D> {
             //TODO: csharp set
             var allEdges = new HashSet<Edge<T, D>>();
             foreach(var edgeList in adjacencyList) {
-                foreach(var edge in edges) {
+                foreach(var edge in edgeList.edges) {
                     allEdges.Add(edge);
                 }
             }
@@ -50,7 +50,9 @@ public class AdjacencyListGraph<T, D> {
         
         // if the vertex doesn't exist, create a new one
         var vertex = new Vertex<T>(data, adjacencyList.Count);
-        adjacencyList.Add(new EdgeList<T, D>(vertex));
+        var edgeList = new EdgeList<T, D>(vertex); 
+
+        adjacencyList.Add(edgeList);
         return vertex;
     }
     
