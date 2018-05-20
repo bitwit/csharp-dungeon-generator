@@ -54,14 +54,16 @@ public class DungeonGenerator<RoomType, HallwayType>
 
     public void generateRooms () {
 
+        // Console.WriteLine("Generating Rooms");
+
         numberOfStepsTaken = 0;
 
+        Random rnd = new Random ();
         for (int i = 0; i < initialRoomCreationCount; i++) {
 
             var offsetX = (dungeonSize.width - creationBounds.width) / 2;
             var offsetY = (dungeonSize.height - creationBounds.height) / 2;
 
-            Random rnd = new Random ();
             var x = offsetX + Convert.ToDouble (rnd.Next (0, Convert.ToInt32 (creationBounds.width)));
             var y = offsetY + Convert.ToDouble (rnd.Next (0, Convert.ToInt32 (creationBounds.height)));
             var width = Math.Floor (minimumRoomWidth + Convert.ToDouble (rnd.Next (0, Convert.ToInt32 (maximumRoomWidth - minimumRoomWidth))));
@@ -228,7 +230,7 @@ public class DungeonGenerator<RoomType, HallwayType>
         generateDungeonGraph();
         generateLineHallways();
         foreach(var hallway in dungeon.hallways) {
-            
+           
             var lineSet = hallway.points;
            
             if (lineSet.Count < 2) { continue; }
@@ -253,8 +255,8 @@ public class DungeonGenerator<RoomType, HallwayType>
             
             if (lineSet.Count < 3) { continue; }
             
-            var secondLineStart = lineSet[0].roundedUp();
-            var secondLineEnd = lineSet[1].roundedUp();
+            var secondLineStart = lineSet[1].roundedUp();
+            var secondLineEnd = lineSet[2].roundedUp();
 
             var horizontalDiff = secondLineStart.diffOf(secondLineEnd);
             var horizontalDirection = horizontalDiff.ToDirection();
@@ -297,7 +299,7 @@ public class DungeonGenerator<RoomType, HallwayType>
     
     public int[,] to2DGrid() {
         
-        if (grid != null || grid.Length != 0) {
+        if (grid != null) {
             return grid;
         }
 
@@ -314,9 +316,9 @@ public class DungeonGenerator<RoomType, HallwayType>
         
         foreach(var rect in rects) {
             var initialX = Convert.ToInt32(rect.origin.x);
-            var maxX = Convert.ToInt32(rect.origin.x + rect.size.width);
+            var maxX = Convert.ToInt32(rect.origin.x + rect.size.width) - 1;
             var initialY = Convert.ToInt32(rect.origin.y);
-            var maxY = Convert.ToInt32(rect.origin.y + rect.size.height);
+            var maxY = Convert.ToInt32(rect.origin.y + rect.size.height) - 1;
             
             for (var x = initialX; x < maxX; x++) {
                 for(var y = initialY; y < maxY; y++) {
