@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CreateDungeon : MonoBehaviour {
+public class VisualDungeonCreationExample : MonoBehaviour {
 
 	public enum GenerationPhase {
 		fittingRooms,
@@ -13,49 +14,13 @@ public class CreateDungeon : MonoBehaviour {
 		grid
 	}
 	struct Constants {
-		public static Size DungeonSize = new Size (width: 48, height: 48);
+		public static Size DungeonSize = new Size (width: 64, height: 64);
 	}
 
 	public GameObject boundaryObject;
 	public GameObject roomObject;
 	public GameObject hallwayObject;
 	public GameObject pixelObject;
-
-	// Use this for initialization
-	// void Start () {
-	// 	UnitySystemConsoleRedirector.Redirect ();
-
-	// 	var generator = new DungeonGenerator<DungeonRoom, DungeonHallway> ();
-	// 	generator.dungeonSize = Constants.DungeonSize;
-	// 	generator.creationBounds = Constants.DungeonSize;
-	// 	generator.minimumRoomWidth = 5;
-	// 	generator.minimumRoomHeight = 5;
-	// 	generator.maximumRoomWidth = 10;
-	// 	generator.maximumRoomHeight = 10;
-	// 	generator.initialRoomCreationCount = 30;
-	// 	generator.runCompleteGeneration ();
-
-	// 	Debug.Log ("Dungeon Generator Complete");
-	// 	Debug.Log ("Rooms: " + generator.dungeon.rooms.Count);
-	// 	Debug.Log ("Hallways: " + generator.dungeon.hallways.Count);
-
-	// 	var dungeonTransform = GetComponent<Transform>();
-
-	// 	foreach(var room in generator.dungeon.rooms) {
-	// 		Debug.Log(room.rect.description);
-	// 		var newRoom = GameObject.Instantiate(roomObject, dungeonTransform);
-	// 		newRoom.transform.localPosition = new Vector3((float)room.rect.center.x, (float)room.rect.center.y, 0);
-	// 		newRoom.transform.localScale = new Vector3((float)room.rect.size.width, (float)room.rect.size.height, 0);
-	// 	}
-	// 	foreach(var hallway in generator.dungeon.hallways) {
-	// 		foreach(var rect in hallway.rects) {
-	// 			var newHallway = GameObject.Instantiate(hallwayObject, dungeonTransform);
-	// 			newHallway.transform.localPosition = new Vector3((float)rect.center.x, (float)rect.center.y, 0);
-	// 			newHallway.transform.localScale = new Vector3((float)rect.size.width, (float)rect.size.height, 0);
-	// 		}
-	// 	}
-	// }
-
 	DungeonGenerator<DungeonRoom, DungeonHallway> dungeonGenerator = new DungeonGenerator<DungeonRoom, DungeonHallway> ();
 	GenerationPhase phase = GenerationPhase.fittingRooms;
 	float accumulatedDelta = 0f;
@@ -68,6 +33,14 @@ public class CreateDungeon : MonoBehaviour {
 		UnitySystemConsoleRedirector.Redirect ();
 		isGenerating = true;
 		dungeonGenerator = new DungeonGenerator<DungeonRoom, DungeonHallway> ();
+		dungeonGenerator.dungeonSize = Constants.DungeonSize;
+		dungeonGenerator.creationBounds = Constants.DungeonSize;
+		// dungeonGenerator.minimumRoomWidth = 15;
+		// dungeonGenerator.minimumRoomHeight = 15;
+		// dungeonGenerator.maximumRoomWidth = 50;
+		// dungeonGenerator.maximumRoomHeight = 50;
+		// dungeonGenerator.hallwayWidth = 15;
+		// dungeonGenerator.initialRoomCreationCount = 30;
 		dungeonGenerator.generateRooms ();
 		phase = GenerationPhase.fittingRooms;
 	}

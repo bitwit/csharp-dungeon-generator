@@ -18,7 +18,7 @@ public class DungeonRoom {
 }
 
 public class DungeonHallway {
-    public List<Point> points = new List<Point>();
+    public List<Line> lines = new List<Line>();
     public List<Rect> rects = new List<Rect>();
     public DungeonHallway() {
         

@@ -10,26 +10,26 @@ public struct Point {
         this.y = y;
     }
     
-    public Point offsetBy(Point offset) {
+    public Point OffsetBy(Point offset) {
         return new Point(x + offset.x, y + offset.y);
     }
     
-    public Point offsetBy(double x, double y) {
-        return offsetBy(new Point(x: x, y: y));
+    public Point OffsetBy(double x, double y) {
+        return OffsetBy(new Point(x: x, y: y));
     }
     
-    public Point diffOf(Point point) {
+    public Point DiffOf(Point point) {
         return new Point(x: x - point.x, y: y - point.y);
     }
     
-    public double distanceFrom(Point otherPoint) {
+    public double DistanceFrom(Point otherPoint) {
         double xDist = x - otherPoint.x;
         double yDist = y - otherPoint.y;
 
         return Math.Sqrt( (xDist * xDist) + (yDist * yDist) );
     }
     
-    public Point roundedUp() {
+    public Point RoundedUp() {
         return new Point(Math.Ceiling(x), Math.Ceiling(y));
     }
     
@@ -52,6 +52,7 @@ public struct Point {
             return Direction.Down;
         }
     }
+
     public String description {
         get {
             return "x:" + x + "y:" + y;

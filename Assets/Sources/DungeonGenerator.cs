@@ -5,7 +5,7 @@ using System.Linq;
 
 public class DungeonGenerator<RoomType, HallwayType>
     where RoomType : DungeonRoom, new ()
-    where HallwayType : DungeonHallway, new () {
+where HallwayType : DungeonHallway, new () {
 
     public Size dungeonSize = new Size (width: 64, height: 64);
     public Size creationBounds = new Size (width: 64, height: 64);
@@ -23,7 +23,7 @@ public class DungeonGenerator<RoomType, HallwayType>
     public Dungeon<RoomType, HallwayType> dungeon;
 
     public List<RoomType> layoutRooms = new List<RoomType> ();
-    public int[,] grid;
+    public int[, ] grid;
 
     private int numberOfStepsTaken = 0;
 
@@ -53,8 +53,6 @@ public class DungeonGenerator<RoomType, HallwayType>
     }
 
     public void generateRooms () {
-
-        // Console.WriteLine("Generating Rooms");
 
         numberOfStepsTaken = 0;
 
@@ -102,12 +100,12 @@ public class DungeonGenerator<RoomType, HallwayType>
                     continue;
                 }
 
-                var paddedRect = currentRoom.rect.insetBy (-minimumRoomSpacing);
-                if (false == paddedRect.intersects (otherRoom.rect)) {
+                var paddedRect = currentRoom.rect.InsetBy (-minimumRoomSpacing);
+                if (false == paddedRect.Intersects (otherRoom.rect)) {
                     continue;
                 }
 
-                var diffPos = paddedRect.origin.diffOf (otherRoom.rect.origin);
+                var diffPos = paddedRect.origin.DiffOf (otherRoom.rect.origin);
 
                 velocityX += diffPos.x;
                 velocityY += diffPos.y;
@@ -150,8 +148,8 @@ public class DungeonGenerator<RoomType, HallwayType>
                     continue;
                 }
 
-                var paddedRect = currentRoom.rect.insetBy (-minimumRoomSpacing);
-                if (paddedRect.intersects (otherRoom.rect)) {
+                var paddedRect = currentRoom.rect.InsetBy (-minimumRoomSpacing);
+                if (paddedRect.Intersects (otherRoom.rect)) {
                     return false;
                 }
             }
@@ -162,8 +160,8 @@ public class DungeonGenerator<RoomType, HallwayType>
     public void removeRoomsOutOfBounds () {
 
         //inset dungeon rect to prevent rooms on edges
-        var dungeonRect = new Rect (origin: new Point (x : 0, y : 0), size : dungeonSize).insetBy (1);
-        layoutRooms = layoutRooms.Where (room => dungeonRect.contains (room.rect)).ToList ();
+        var dungeonRect = new Rect (origin: new Point (x : 0, y : 0), size : dungeonSize).InsetBy (1);
+        layoutRooms = layoutRooms.Where (room => dungeonRect.Contains (room.rect)).ToList ();
     }
 
     public Dungeon<RoomType, HallwayType> generateGraph () {
@@ -203,10 +201,10 @@ public class DungeonGenerator<RoomType, HallwayType>
 
             finalRooms.Add (currentRoom);
             var currentVertex = graph.createVertex (currentRoom);
-            foreach(var otherRoom in connections) {
+            foreach (var otherRoom in connections) {
                 var otherVertex = graph.createVertex (otherRoom);
-                var hallway = new HallwayType();
-                graph.addEdge (currentVertex, otherVertex, hallway, currentRoom.rect.center.distanceFrom (otherRoom.rect.center));
+                var hallway = new HallwayType ();
+                graph.addEdge (currentVertex, otherVertex, hallway, currentRoom.rect.center.DistanceFrom (otherRoom.rect.center));
             }
         }
 
@@ -215,120 +213,133 @@ public class DungeonGenerator<RoomType, HallwayType>
         return graph;
     }
 
-    public void generateDungeonGraph() {
+    public void generateDungeonGraph () {
         if (dungeon != null) {
             return;
         }
-        
-        var initialGraph = generateGraph();
-        var tree = GraphHelpers.minimumSpanningTreeKruskal(graph: initialGraph);
-        this.dungeon = new Dungeon<RoomType, HallwayType>(tree);
-    }
-    
-    public void generateHallways() {
-        
-        generateDungeonGraph();
-        generateLineHallways();
-        foreach(var hallway in dungeon.hallways) {
-           
-            var lineSet = hallway.points;
-           
-            if (lineSet.Count < 2) { continue; }
-            
-            var firstLineStart = lineSet[0].roundedUp();
-            var firstLineEnd = lineSet[1].roundedUp();
 
-            var verticalDiff = firstLineStart.diffOf(firstLineEnd);
-            var verticalDirection = verticalDiff.ToDirection();
-            var roundedHalfWidth = Math.Ceiling(hallwayWidth / 2);
-            
+        var initialGraph = generateGraph ();
+        var tree = GraphHelpers.minimumSpanningTreeKruskal (graph: initialGraph);
+        this.dungeon = new Dungeon<RoomType, HallwayType> (tree);
+    }
+
+    public void generateHallways () {
+
+        generateDungeonGraph ();
+        generateLineHallways ();
+        foreach (var hallway in dungeon.hallways) {
+
+            var lines = hallway.lines;
+
+            if (lines.Count < 1) { continue; }
+
+            var firstLineStart = lines[0].start.RoundedUp ();
+            var firstLineEnd = lines[0].end.RoundedUp ();
+
+            var verticalDiff = firstLineStart.DiffOf (firstLineEnd);
+            var verticalDirection = verticalDiff.ToDirection ();
+            var roundedHalfWidth = Math.Ceiling (hallwayWidth / 2);
+
+            Console.WriteLine("Lines to be rect" + firstLineStart.description + firstLineEnd.description);
+
             //vertical hallways are first
             if (verticalDirection == Direction.Down) {
-                var origin = firstLineStart.offsetBy(x: -roundedHalfWidth, y: 0);
-                var rect = new Rect(origin: origin, size: new Size(width: hallwayWidth, height: firstLineStart.distanceFrom(firstLineEnd)));
-                hallway.rects.Add(rect);
+                var origin = firstLineStart.OffsetBy (x: -roundedHalfWidth, y : 0);
+                var rect = new Rect (origin: origin, size: new Size (width : hallwayWidth, height : firstLineStart.DistanceFrom (firstLineEnd)));
+                hallway.rects.Add (rect);
             } else {
-                var origin = firstLineEnd.offsetBy(x: -roundedHalfWidth, y: 0);
-                var rect = new Rect(origin: origin, size: new Size(width: hallwayWidth, height: firstLineStart.distanceFrom(firstLineEnd)));
-                hallway.rects.Add(rect);
+                var origin = firstLineEnd.OffsetBy (x: -roundedHalfWidth, y : 0);
+                var rect = new Rect (origin: origin, size: new Size (width : hallwayWidth, height : firstLineStart.DistanceFrom (firstLineEnd)));
+                hallway.rects.Add (rect);
             }
-            
-            if (lineSet.Count < 3) { continue; }
-            
-            var secondLineStart = lineSet[1].roundedUp();
-            var secondLineEnd = lineSet[2].roundedUp();
 
-            var horizontalDiff = secondLineStart.diffOf(secondLineEnd);
-            var horizontalDirection = horizontalDiff.ToDirection();
-            
+            if (lines.Count < 2) { continue; }
+
+            var secondLineStart = lines[1].start.RoundedUp ();
+            var secondLineEnd = lines[1].end.RoundedUp ();
+
+            var horizontalDiff = secondLineStart.DiffOf (secondLineEnd);
+            var horizontalDirection = horizontalDiff.ToDirection ();
+
             //horizontal comes second
             if (horizontalDirection == Direction.Left) {
-                var origin = secondLineStart.offsetBy(x: 0, y: -roundedHalfWidth);
-                var rect = new Rect(origin: origin, size: new Size(width: secondLineStart.distanceFrom(secondLineEnd), height: hallwayWidth));
-                hallway.rects.Add(rect);
+                var origin = secondLineStart.OffsetBy (x: 0, y: -roundedHalfWidth);
+                var rect = new Rect (origin: origin, size: new Size (width : secondLineStart.DistanceFrom (secondLineEnd), height : hallwayWidth));
+                hallway.rects.Add (rect);
             } else {
-                var origin = secondLineEnd.offsetBy(x: 0, y: -roundedHalfWidth);
-                var rect = new Rect(origin: origin, size: new Size(width: secondLineStart.distanceFrom(secondLineEnd), height: hallwayWidth));
-                hallway.rects.Add(rect);
+                var origin = secondLineEnd.OffsetBy (x: 0, y: -roundedHalfWidth);
+                var rect = new Rect (origin: origin, size: new Size (width : secondLineStart.DistanceFrom (secondLineEnd), height : hallwayWidth));
+                hallway.rects.Add (rect);
             }
         }
     }
-    
-    public void generateLineHallways() {
 
-        foreach(var edge in dungeon.edges) {
-            
+    public void generateLineHallways () {
+
+        foreach (var edge in dungeon.edges) {
             var fromRoom = edge.from.data;
             var toRoom = edge.to.data;
-            
+
             var lineOrigin = fromRoom.rect.center;
-            edge.data.points.Add(lineOrigin);
-            
-            var positionDiff = toRoom.rect.center.diffOf(lineOrigin);
-            var verticalLinePoint = lineOrigin.offsetBy(new Point(0, positionDiff.y));
-            edge.data.points.Add(verticalLinePoint);
-            
-            if (toRoom.rect.intersects(lineOrigin, verticalLinePoint)) {
-                continue;
+            var positionDiff = toRoom.rect.center.DiffOf (lineOrigin);
+            var verticalLinePoint = lineOrigin.OffsetBy (new Point (0, positionDiff.y));
+            Line firstLine = new Line (lineOrigin, verticalLinePoint);
+
+            if (false == lineOrigin.isEqualTo(verticalLinePoint)) {
+                var fromRoomFirstLineIntersectionPoint = firstLine.ClosestPointOfIntersection (fromRoom.rect, firstLine.end);
+                firstLine.start = fromRoomFirstLineIntersectionPoint.Value;
+
+                if (toRoom.rect.Intersects (firstLine)) {
+                    var toRoomFirstLineIntersectionPoint = firstLine.ClosestPointOfIntersection (toRoom.rect, firstLine.start);
+                    Console.WriteLine("first line intersects" + firstLine.end.description + "," + toRoomFirstLineIntersectionPoint.Value.description);
+                    firstLine.end = toRoomFirstLineIntersectionPoint.Value;
+                    edge.data.lines.Add (firstLine);
+                    continue;
+                } else {
+                    edge.data.lines.Add (firstLine);
+                }
             }
-            
-            var horizontalLinePoint = verticalLinePoint.offsetBy(new Point(positionDiff.x, 0));
-            edge.data.points.Add(horizontalLinePoint);
+
+            var horizontalLinePoint = verticalLinePoint.OffsetBy (new Point (positionDiff.x, 0));
+            var secondLine = new Line (verticalLinePoint, horizontalLinePoint);
+            var toRoomSecondLineIntersectionPoint = secondLine.ClosestPointOfIntersection (toRoom.rect, secondLine.start);
+            secondLine.end = toRoomSecondLineIntersectionPoint.Value;
+            edge.data.lines.Add (secondLine);
         }
     }
-    
-    public int[,] to2DGrid() {
-        
+
+    public int[, ] to2DGrid () {
+
         if (grid != null) {
             return grid;
         }
 
-        int[,] newGrid = new int[Convert.ToInt32(dungeonSize.height),Convert.ToInt32(dungeonSize.width)];
-        
-        List<Rect> rects = new List<Rect>();
+        int[, ] newGrid = new int[Convert.ToInt32 (dungeonSize.height), Convert.ToInt32 (dungeonSize.width)];
 
-        foreach(var room in dungeon.rooms) {
-            rects.Add(room.rect);
+        List<Rect> rects = new List<Rect> ();
+
+        foreach (var room in dungeon.rooms) {
+            rects.Add (room.rect);
         }
-        foreach(var hallway in dungeon.hallways) {
-            rects.AddRange(hallway.rects);
+        foreach (var hallway in dungeon.hallways) {
+            rects.AddRange (hallway.rects);
         }
-        
-        foreach(var rect in rects) {
-            var initialX = Convert.ToInt32(rect.origin.x);
-            var maxX = Convert.ToInt32(rect.origin.x + rect.size.width) - 1;
-            var initialY = Convert.ToInt32(rect.origin.y);
-            var maxY = Convert.ToInt32(rect.origin.y + rect.size.height) - 1;
-            
+
+        foreach (var rect in rects) {
+            var initialX = Convert.ToInt32 (rect.origin.x);
+            var maxX = Convert.ToInt32 (rect.origin.x + rect.size.width) - 1;
+            var initialY = Convert.ToInt32 (rect.origin.y);
+            var maxY = Convert.ToInt32 (rect.origin.y + rect.size.height) - 1;
+
             for (var x = initialX; x < maxX; x++) {
-                for(var y = initialY; y < maxY; y++) {
+                for (var y = initialY; y < maxY; y++) {
                     newGrid[y, x] = 1;
                 }
             }
         }
-        
+
         this.grid = newGrid;
-        
+
         return grid;
     }
 
