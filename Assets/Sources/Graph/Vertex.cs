@@ -1,19 +1,21 @@
 using System;
 
-public struct Vertex<T> {
+namespace DungeonGenerator {
+  public struct Vertex<T> {
 
-  public T data;
-  public int index;
+    public T data;
+    public int index;
 
-  public Vertex(T data, int index) {
-    this.data = data;
-    this.index = index;
+    public Vertex (T data, int index) {
+      this.data = data;
+      this.index = index;
+    }
+
+    public override int GetHashCode () {
+      return ("" + data + index).GetHashCode ();
+    }
+
   }
-
-  public override int GetHashCode () {
-    return ("" + data + index).GetHashCode();
-  }
-
 }
 
 // public func == < T > (lhs: Vertex<T>, rhs: Vertex<T>) - > Bool {

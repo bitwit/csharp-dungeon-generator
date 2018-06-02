@@ -11,6 +11,25 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1267918536220298}
   m_IsPrefabParent: 1
+--- !u!1 &1187896829371396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4168101199742756}
+  - component: {fileID: 33431116613543412}
+  - component: {fileID: 23180145725740078}
+  - component: {fileID: 64987576961035372}
+  - component: {fileID: 114604236849817144}
+  m_Layer: 0
+  m_Name: Floor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1267918536220298
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,9 +38,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4820270819446090}
-  - component: {fileID: 33349212908512922}
-  - component: {fileID: 23738517440578160}
-  - component: {fileID: 64111516014182270}
+  - component: {fileID: 114078139343057534}
   m_Layer: 0
   m_Name: 3DHallway
   m_TagString: Untagged
@@ -46,6 +63,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4168101199742756
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1187896829371396}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4820270819446090}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4583547577184656
 Transform:
   m_ObjectHideFlags: 1
@@ -66,19 +96,20 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1267918536220298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 418.6, y: 111.49, z: 675.24}
+  m_LocalPosition: {x: -41.28, y: 28.410728, z: -16.83879}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4583547577184656}
+  - {fileID: 4168101199742756}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23738517440578160
+--- !u!23 &23180145725740078
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1267918536220298}
+  m_GameObject: {fileID: 1187896829371396}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -88,7 +119,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f462446b4bfa141bc802c70483e36862, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -114,7 +145,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1336635308117776}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -143,19 +174,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33349212908512922
+--- !u!33 &33431116613543412
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1267918536220298}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &64111516014182270
+  m_GameObject: {fileID: 1187896829371396}
+  m_Mesh: {fileID: 0}
+--- !u!64 &64987576961035372
 MeshCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1267918536220298}
+  m_GameObject: {fileID: 1187896829371396}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -163,7 +194,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 0}
 --- !u!102 &102343963370993782
 TextMesh:
   serializedVersion: 3
@@ -185,3 +216,29 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4279769117
+--- !u!114 &114078139343057534
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1267918536220298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca71977a9bf1a491986b64d2c296b7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorTransform: {fileID: 4168101199742756}
+--- !u!114 &114604236849817144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1187896829371396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e88e74baa7aa4aab95ac2d01954e36d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size_x: 10
+  size_z: 10
+  tileSize: 1
